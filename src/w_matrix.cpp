@@ -5,11 +5,13 @@ void wuv(Eigen::MatrixXd &wuv, int i, Eigen::MatrixXd V, Eigen::MatrixXi F, Eige
   Eigen::MatrixXd dx(3,2);
   Eigen::MatrixXd duv(2,2);
   Eigen::RowVector3d tri = F.row(i);
-  // construct duv
+  // construct duv, first row is du, second row is dv
   duv << UV(i * 3 + tri(1), 0) - UV(i * 3 + tri(0), 0), UV(i * 3 + tri(2), 0) - UV(i * 3 + tri(0), 0),
     UV(i * 3 + tri(1),1) - UV(i * 3 + tri(1), 1), UV(i * 3 + tri(2), 1) - UV(i * 3 + tri(0), 1);
   // construct dx
   dx.col(0) << V.row(tri(1)) - V.row(tri(0), 0);
   dx.col(1) << V.row(tri(2)) - V.row(tri(0), 0);
+  // we calculate [Wu Wv] = dx * duv^-1
+  // should be 3 x 2
   wuv = dx * duv.inverse();
 }
