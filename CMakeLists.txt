@@ -19,4 +19,4 @@ file(GLOB CPP_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 #exec building
 add_executable(${PROJECT_NAME} main.cpp ${H_FILES} ${CPP_FILES})
-target_link_libraries($PROJECT_NAME} igl::core igl::opengl igl::opengl_glfw igl::opengl_glfw_imgui)
+target_link_libraries(${PROJECT_NAME} igl::core igl::opengl igl::opengl_glfw igl::opengl_glfw_imgui)
