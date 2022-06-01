@@ -1,4 +1,4 @@
 #include "mass_matrix.h"
-void mass_matrix(Eigen::SparseMatrixd &M){
+void mass_matrix(Eigen::SparseMatrix<double> &M){
 
 }

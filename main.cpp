@@ -1,6 +1,6 @@
-#include <igl/readMESH.h>
+#include <igl/readOBJ.h>
 #include <string>
 
-void setup(std::string file, Eigen::VectorXd &V, Eigen::VectorXd &F){
-  igl::readOBJ(file, V, F);
+void setup(std::string file, Eigen::VectorXd &V, Eigen::MatrixXi &F) {
+    igl::readOBJ(file, V, F);
 }

@@ -1,5 +1,6 @@
 #include "stretch.h"
-#Include "w_matrix.h"
+#include "w_matrix.h"
+
 void stretch_cond(Eigen::Vector2d &cond, Eigen::MatrixXd wuv, Eigen::Vector2d b, double a, Eigen::Vector2d uv, Eigen::RowVector3d coords){
   cond(0) = a * (wuv.col(0).norm() - b(0));
   cond(1) = a * (wuv.col(1).norm() - b(1));
