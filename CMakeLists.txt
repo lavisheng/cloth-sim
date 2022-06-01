@@ -9,13 +9,13 @@ option(LIBIGL_WITH_OPENGL               "Use OpenGL"            ON)
 option(LIBIGL_WITH_OPENGL_GLFW          "Use GLFW"              ON)
 option(LIBIGL_WITH_OPENGL_GLFW_IMGUI    "Use ImGui"             ON)
 
-find_package(LIBIGL REQUIRED QUIET)
+include (libigl)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #include code
 file(GLOB H_FILES ${PROJECT_SOURCE_DIR}/include/*.h)
-file GLOB CPP_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB CPP_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 #exec building
 add_executable(${PROJECT_NAME} main.cpp ${H_FILES} ${CPP_FILES})
