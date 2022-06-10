@@ -19,8 +19,8 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
       UV(i * 3 + tri(1),1) - UV(i * 3 + tri(1), 1), UV(i * 3 + tri(2), 1) - UV(i * 3 + tri(0), 1);
     // the denominator du1 * dv2 - du2 * dv1
     D = duv(0,0) * duv(1,1) - duv(0,1) * duv(1,0);
-    stretch_dwudx.row(i) << (duv(1,0) - duv(1,1))/ D, duv(1,0)/ D, duv(1,1) / D;
-    stretch_dwvdx.row(i) << (duv(0,0) - duv(0,1))/ D , duv(0,0)/ D, duv(0,1) / D;
+    stretch_dwudx.row(i) << (duv(1,0) - duv(1,1))/ D, duv(1,0)/ D, -duv(1,1) / D;
+    stretch_dwvdx.row(i) << (duv(0,0) - duv(0,1))/ D , -duv(0,0)/ D, duv(0,1) / D;
   }
 }
 void stretch_dcdxi(Eigen::MatrixXd &dcdxi, int i0, int i1, Eigen::MatrixXd wuv, Eigen::MatrixXd stretch_dwudx, Eigen::MatrixXd stretch_dwvdx){
