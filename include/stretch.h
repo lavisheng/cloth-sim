@@ -11,10 +11,13 @@ void stretch_cond(Eigen::Vector2d &cond, Eigen::MatrixXd wuv, Eigen::Vector2d b,
 /**
  * Precomputes matrix values that are used to calculate dcdxi
  * Inputs:
- *   F - #F x 3 matrix storing indices to vertices
- *   UV - #UV by 2 list of UV coordinates
+ *   F - #F by 3 matrix storing indices to vertices
+ *   global_duv - #F x 2 by 2 stack of duvs that were precomputed 
+ * Out:
+ *   stretch_dwudx - #F by 3 list of dwudx constants
+ *   stretch_dwvdx - #F by 3 list of dwvdx constants
  */
-void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch_dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd UV);
+void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch_dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd global_duv);
 
 /**
  * Computes dcdxi for a triangle
