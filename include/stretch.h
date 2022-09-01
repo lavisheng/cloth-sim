@@ -20,7 +20,7 @@ void stretch_cond(Eigen::Vector2d &cond, Eigen::MatrixXd wuv, Eigen::Vector2d b,
 void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch_dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd global_duv);
 
 /**
- * Computes dcdxi for a triangle
+ * Computes dcdxi for a vertex in a triangle
  * Inputs:
  *   wuv - wuv matrix
  *   dwudx - precomputed dwudx matrix value in dwudx
@@ -31,7 +31,7 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
 void stretch_dcdxi(Eigen::MatrixXd & dcdxi, Eigen::MatrixXd wuv, double dwudx, double dwvdx);
 
 /**
- * Computes the d2c/dxixj for a triangle
+ * Computes the d2c/dxixj for a pair of vertices in a triangle
  * Inputs:
  *   a - area of triangle in (u,v) space, precomputable
  *   wuv - wuv matrix
