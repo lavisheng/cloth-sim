@@ -22,10 +22,22 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
 /**
  * Computes dcdxi for a triangle
  * Inputs:
- *   i0 - triangle id
- *   i1 - vertex in triangle id
  *   wuv - wuv matrix
- *   stretch_dwudx - precomputed dwudx matrix
- *   stretch_dwvdx - precomputed dwvdx
+ *   dwudx - precomputed dwudx matrix value in dwudx
+ *   dwvdx - precomputed dwvdx matrix value in dwvdx
+ * Out:
+ *   dcdxi - derivative of c
  */
-void stretch_dcdxi(Eigen::MatrixXd & dcdxi, int i0, int i1, Eigen::MatrixXd wuv, Eigen::MatrixXd stretch_dwudx, Eigen::MatrixXd stretch_dwvdx);
+void stretch_dcdxi(Eigen::MatrixXd & dcdxi, Eigen::MatrixXd wuv, double dwudx, double dwvdx);
+
+/**
+ * Computes the d2c/dxixj for a triangle
+ * Inputs:
+ *   a - area of triangle in (u,v) space, precomputable
+ *   wuv - wuv matrix
+ *   dwudx_prod - dwudxi * dwudxj for calculating the second derivative
+ *   dwvdx_prod - dwvdxi * dwvdxj for calculating second derivative
+ * Out:
+ *   d2cdxixj - second derivative of c
+ */
+void stretch_d2cdxixj(Eigen::MatrixXd &d2cdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod);

@@ -20,13 +20,20 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
     stretch_dwvdx.row(i) << (duv(0,0) - duv(0,1))/ D , -duv(0,0)/ D, duv(0,1) / D;
   }
 }
-// TODO: Refactor, we don't need i0, i1 we can just have the constants and pass them in
-void stretch_dcdxi(Eigen::MatrixXd &dcdxi, int i0, int i1, Eigen::MatrixXd wuv, Eigen::MatrixXd stretch_dwudx, Eigen::MatrixXd stretch_dwvdx){
+void stretch_dcdxi(Eigen::MatrixXd &dcdxi,  Eigen::MatrixXd wuv, double dwudx, double dwvdx){
   dcdxi.resize(3,2);
   // we use precomputed to form the appropriate matrices
   Eigen::Matrix3d ucomp, vcomp;
-  ucomp = stretch_dwudx(i0, i1) * Eigen::Matrix3d::Identity();
-  vcomp = stretch_dwvdx(i0,i1) * Eigen::Matrix3d::Identity();
+  ucomp = dwudx * Eigen::Matrix3d::Identity();
+  vcomp = dwvdx * Eigen::Matrix3d::Identity();
   dcdxi.col(0) << ucomp * wuv.col(0);
   dcdxi.col(1) << vcomp * wuv.col(1);
+}
+
+void stretch_d2cdxixj(Eigen::MatrixXd &d2cdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod){
+  d2cdxixj.resize(3,2);
+  // a / ||w_u|| dw/dxi dw/dxj (I - w_u * w_u^T) and vice versa for v
+  d2cdxixj.col(0) << a / wuv.col(0).norm() * dwudx_prod * (Eigen::Matrix3d::Identity() - wuv.col(0) * wuv.col(0).transpose());
+  d2cdxixj.col(1) << a / wuv.col(0).norm() * dwvdx_prod * (Eigen::Matrix3d::Identity() - wuv.col(1) * wuv.col(1).transpose());
+  
 }
