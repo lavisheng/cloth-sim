@@ -26,9 +26,10 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
  *   dwudx - precomputed dwudx matrix value in dwudx
  *   dwvdx - precomputed dwvdx matrix value in dwvdx
  * Out:
- *   dcdxi - derivative of c
+ *   dwudxi - derivative of wu respect to xi
+ *   dwvdxi - derivative of wv respect to xi
  */
-void stretch_dcdxi(Eigen::MatrixXd & dcdxi, Eigen::MatrixXd wuv, double dwudx, double dwvdx);
+void stretch_dcdxi(Eigen::Vector3d &dwudxi, Eigen::Vector3d &dwvdxi, Eigen::MatrixXd wuv, double dwudx, double dwvdx);
 
 /**
  * Computes the d2c/dxixj for a pair of vertices in a triangle
@@ -38,6 +39,7 @@ void stretch_dcdxi(Eigen::MatrixXd & dcdxi, Eigen::MatrixXd wuv, double dwudx, d
  *   dwudx_prod - dwudxi * dwudxj for calculating the second derivative
  *   dwvdx_prod - dwvdxi * dwvdxj for calculating second derivative
  * Out:
- *   d2cdxixj - second derivative of c
+ *   dwudxixj - second derivative of wu respect to xi, xj
+ *   dwvdxixj - second derivative of wv respect to xi, xj
  */
-void stretch_d2cdxixj(Eigen::MatrixXd &d2cdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod);
+void stretch_d2cdxixj(Eigen::Matrix3d &dwudxixj, Eigen::Matrix3d &dwvdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod);

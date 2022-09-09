@@ -20,20 +20,20 @@ void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch
     stretch_dwvdx.row(i) << (duv(0,0) - duv(0,1))/ D , -duv(0,0)/ D, duv(0,1) / D;
   }
 }
-void stretch_dcdxi(Eigen::MatrixXd &dcdxi,  Eigen::MatrixXd wuv, double dwudx, double dwvdx){
-  dcdxi.resize(3,2);
+void stretch_dcdxi(Eigen::Vector3d &dwudxi, Eigen::Vector3d &dwvdxi,  Eigen::MatrixXd wuv, double dwudx, double dwvdx){
   // we use precomputed to form the appropriate matrices
   Eigen::Matrix3d ucomp, vcomp;
   ucomp = dwudx * Eigen::Matrix3d::Identity();
   vcomp = dwvdx * Eigen::Matrix3d::Identity();
-  dcdxi.col(0) << ucomp * wuv.col(0);
-  dcdxi.col(1) << vcomp * wuv.col(1);
+  dwudxi = ucomp * wuv.col(0);
+  dwvdxi = vcomp * wuv.col(1);
 }
 
-void stretch_d2cdxixj(Eigen::MatrixXd &d2cdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod){
-  d2cdxixj.resize(3,2);
+void stretch_d2cdxixj(Eigen::Matrix3d &d2wudxixj, Eigen::Matrix3d &d2wvdxixj, double a, Eigen::MatrixXd wuv, double dwudx_prod, double dwvdx_prod){
+  //dwudxixj.resize(3,3);
+  //dwvdxixj.resize(3,3);
   // a / ||w_u|| dw/dxi dw/dxj (I - w_u * w_u^T) and vice versa for v
-  d2cdxixj.col(0) << a / wuv.col(0).norm() * dwudx_prod * (Eigen::Matrix3d::Identity() - wuv.col(0) * wuv.col(0).transpose());
-  d2cdxixj.col(1) << a / wuv.col(0).norm() * dwvdx_prod * (Eigen::Matrix3d::Identity() - wuv.col(1) * wuv.col(1).transpose());
+  d2wudxixj = a / wuv.col(0).norm() * dwudx_prod * (Eigen::Matrix3d::Identity() - wuv.col(0) * wuv.col(0).transpose());
+  d2wvdxixj = a / wuv.col(0).norm() * dwvdx_prod * (Eigen::Matrix3d::Identity() - wuv.col(1) * wuv.col(1).transpose());
   
 }
