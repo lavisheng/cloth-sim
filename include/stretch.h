@@ -20,16 +20,19 @@ void stretch_cond(Eigen::Vector2d &cond, Eigen::MatrixXd wuv, Eigen::Vector2d b,
 void stretch_precompute(Eigen::MatrixXd &stretch_dwudx, Eigen::MatrixXd &stretch_dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd global_duv);
 
 /**
- * Computes dcdxi for a vertex in a triangle
+ * Computes dcdx for the mesh
  * Inputs:
- *   wuv - wuv matrix
- *   dwudx - precomputed dwudx matrix value in dwudx
- *   dwvdx - precomputed dwvdx matrix value in dwvdx
+ *   F - #F by 3 list of triangle faces
+ *   V_size - #V 
+ *   a - #F list of triangle areas (precomputed)
+ *   wuv - #F x 2 by 2 stacks of wuv matrices
+ *   dwudx - #F x 3 stacks of dwudx per triangle
+ *   dwvdx - #F x 3 stacks of dwvdx per triangle
  * Out:
- *   dwudxi - derivative of wu respect to xi
- *   dwvdxi - derivative of wv respect to xi
+ *   dcudxi - derivative of cu respect to xi
+ *   dcvdxi - derivative of cv respect to xi
  */
-void stretch_dcdxi(Eigen::Vector3d &dwudxi, Eigen::Vector3d &dwvdxi, Eigen::MatrixXd wuv, double dwudx, double dwvdx);
+void stretch_dcdxi(Eigen::VectorXd &dcudxi, Eigen::VectorXd &dcvdxi, Eigen::MatrixXd F, int V_size, Eigen::VectorXd a, Eigen::MatrixXd wuv, Eigen::VectorXd dwudx, Eigen::VectorXd dwvdx);
 
 /**
  * Computes the d2c/dxixj for a pair of vertices in a triangle

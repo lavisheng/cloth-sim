@@ -20,3 +20,26 @@ void wuv(Eigen::MatrixXd &wuv, Eigen::MatrixXi F, Eigen::MatrixXd V, int i, Eige
   // should be 3 x 2
   wuv = dx * duv.inverse();
 }
+
+void precompute_dwdx(Eigen::MatrixXd &dwudx, Eigen::MatrixXd &dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd duv){
+  dwudx.resize(F.rows(), 3);
+  dwvdx.resize(F.rows(), 3);
+  Eigen::Matrix2d local_duv(2,2);
+  double D;
+  for(int i = 0; i < F.rows(); i++){
+    // basically use what we did in w_matrix to get duv
+    local_duv = duv.block<2,2>(i * 2, 0);
+    // the denominator du1 * dv2 - du2 * dv1
+    D = local_duv(0,0) * local_duv(1,1) - local_duv(0,1) * local_duv(1,0);
+    dwudx.row(i) << (local_duv(1,0) - local_duv(1,1))/ D, local_duv(1,0)/ D, -local_duv(1,1) / D;
+    dwvdx.row(i) << (local_duv(0,0) - local_duv(0,1))/ D , -local_duv(0,0)/ D, local_duv(0,1) / D;
+  }
+}
+void dwdxi(Eigen::Vector3d &dwudxi, Eigen::Vector3d &dwvdxi,  Eigen::MatrixXd wuv, double dwudx, double dwvdx){
+  // we use precomputed to form the appropriate matrices
+  Eigen::Matrix3d ucomp, vcomp;
+  ucomp = dwudx * Eigen::Matrix3d::Identity();
+  vcomp = dwvdx * Eigen::Matrix3d::Identity();
+  dwudxi = ucomp * wuv.col(0);
+  dwvdxi = vcomp * wuv.col(1);
+}
