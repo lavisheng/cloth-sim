@@ -13,9 +13,9 @@ void stretch_dcdxi(Eigen::VectorXd &dcudxi, Eigen::VectorXd &dcvdxi, Eigen::Matr
     for(int f_i = 0; f_i < 3; f_i++){
       int v_index = F(i, f_i);
       // calculates a * dwudx * wu
-      dcudxi.segment(v_index * 3, v_index * 3) = a[i] * dwudx.segment(v_index*3, (v_index + 1) * 3) * wuv.col(0).segment(v_index * 3, (v_index + 1) * 3);
+      dcudxi.segment(v_index * 3, (v_index + 1) * 3) = a[i] * dwudx.segment(v_index*3, (v_index + 1) * 3) * wuv.col(0).segment(v_index * 3, (v_index + 1) * 3);
       // calculates a * dwvdx * wv
-      dcvdxi.segment(v_index * 3, v_index * 3) = a[i] * dwvdx.segment(v_index*3, (v_index + 1) * 3) * wuv.col(1).segment(v_index * 3, (v_index + 1) * 3);
+      dcvdxi.segment(v_index * 3, (v_index + 1) * 3) = a[i] * dwvdx.segment(v_index*3, (v_index + 1) * 3) * wuv.col(1).segment(v_index * 3, (v_index + 1) * 3);
     }
   }
 }
