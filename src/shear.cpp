@@ -1,5 +1,6 @@
 #include "shear.h"
-double shear_cond(Eigen::MatrixXd wuv, double a){
+
+double shear_cond(Eigen::MatrixXd wuv, double area){
   // shear condition is a * wu^T * wv
-  return a * wuv.col(0).transpose() * wuv.col(1);
+  return area * wuv.col(0).transpose() * wuv.col(1);
 }

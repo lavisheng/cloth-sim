@@ -8,4 +8,4 @@
  * Out:
  *   cond - the condition value
  */
-double shear_cond( Eigen::MatrixXd wuv, double a);
+double shear_cond(Eigen::MatrixXd wuv, double area);

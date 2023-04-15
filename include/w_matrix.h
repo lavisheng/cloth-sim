@@ -1,4 +1,5 @@
 #include <Eigen/Dense>
+
 /**
  * Precomputes the duv we use in wuv and other places
  * Inputs:
@@ -7,7 +8,8 @@
  * Out:
  *   global_duv - a #F*2x2 matrix with all the duvs for each triangle stacked
  */
-void precompute_duv(Eigen::MatrixXd &global_duv, Eigen::MatrixXi F, Eigen::MatrixXd UV);
+void precompute_duv(Eigen::MatrixXd &global_duv, const Eigen::MatrixXi &F, Eigen::MatrixXd UV);
+
 /**
  * Calculates the W_{uv} matrix which describes the stretch and squash across a cloth's 
  * uv coordinates.
@@ -19,7 +21,7 @@ void precompute_duv(Eigen::MatrixXd &global_duv, Eigen::MatrixXi F, Eigen::Matri
  * Out:
  *   wuv - the w_{uv} matrix for a given triangle
  */
-  void wuv(Eigen::MatrixXd &wuv, Eigen::MatrixXi F, Eigen::MatrixXd V, int i, Eigen::MatrixXd duv);
+void wuv(Eigen::MatrixXd &wuv, const Eigen::MatrixXi &F, const Eigen::MatrixXd &V, int triangle, Eigen::MatrixXd duv);
 
 /**
  * Precomputes matrix values used to calculate dwu/dxi and dwvdxi
@@ -30,7 +32,7 @@ void precompute_duv(Eigen::MatrixXd &global_duv, Eigen::MatrixXi F, Eigen::Matri
  *   dwudx - #F by 3 list of dwudx constants
  *   dwvdx - #F by 3 list of dwvdx constants
  */
-void precompute_dwdx(Eigen::MatrixXd &dwudx, Eigen::MatrixXd dwvdx, Eigen::MatrixXi F, Eigen::MatrixXd duv);
+void precompute_dwdx(Eigen::MatrixXd &dwudx, Eigen::MatrixXd dwvdx, const Eigen::MatrixXi &F, Eigen::MatrixXd duv);
 
 /**
  * Computes dwdxi for a vertex in a triangle
