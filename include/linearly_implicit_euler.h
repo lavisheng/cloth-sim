@@ -1,6 +1,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
+#include <stdio.h>
 
 //Input:
 //  q - generalized coordinates for the FEM system
@@ -17,14 +18,15 @@
 template<typename FORCE, typename STIFFNESS>
 inline void linearly_implicit_euler(Eigen::VectorXd &q, Eigen::VectorXd &qdot, double dt,
                                     const Eigen::SparseMatrix<double> &mass, FORCE &force, STIFFNESS &stiffness,
-                                    Eigen::VectorXd &tmp_force, Eigen::SparseMatrix<double> &tmp_stiffness) {
-  // eqn is A qdot = b, where A = M - dt^2 K and b = Mqdot + dt f(q)
-  // solve for qdot by solving sparse system
-  Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
-  stiffness(tmp_stiffness, q, qdot);
-  solver.compute(mass - dt * dt * tmp_stiffness);
-  force(tmp_force, q, qdot);
-  qdot = solver.solve(mass * qdot + dt * tmp_force);
-  // update q using updated qdot
-  q = q + dt * qdot;
+                                    Eigen::VectorXd &tmp_force, Eigen::SparseMatrix<double> &tmp_stiffness,
+                                    Eigen::SparseMatrix<double> fp) {
+    // eqn is A qdot = b, where A = M - dt^2 K and b = Mqdot + dt f(q)
+    // solve for qdot by solving sparse system
+    Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
+    stiffness(tmp_stiffness, q, qdot);
+    solver.compute(fp * (mass - dt * dt * tmp_stiffness) * fp.transpose());
+    force(tmp_force, q, qdot);
+    qdot = fp.transpose() * solver.solve(fp * (mass * qdot + dt * tmp_force));
+    // update q using updated qdot
+    q = q + dt * qdot;
 }

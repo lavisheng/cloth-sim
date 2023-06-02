@@ -6,11 +6,15 @@ MassSpringsModel::MassSpringsModel(Eigen::MatrixXd &V, Eigen::MatrixXi &F, doubl
 
 bool MassSpringsModel::init_precompute() {
     igl::edges(F, E);
-    igl::edge_lengths(V, F, l0);
+    l0 = Eigen::VectorXd(E.rows());
+    for (int e = 0; e < E.rows(); e++) {
+        int v0 = E(e, 0), v1 = E(e, 1);
+        l0(e) = (V.row(v0) - V.row(v1)).norm();
+    }
     return true;
 }
 
-void MassSpringsModel::potential_energy(double &energy, const Eigen::VectorXd q) {
+void MassSpringsModel::potential_energy(double &energy, const Eigen::VectorXd &q) {
     double energy_temp = 0;
     for (int e = 0; e < E.rows(); e++) {
         Eigen::Vector3d q0 = q.segment(E(e, 0), 3);
@@ -20,7 +24,7 @@ void MassSpringsModel::potential_energy(double &energy, const Eigen::VectorXd q)
     energy = energy_temp;
 }
 
-void MassSpringsModel::force(Eigen::VectorXd &f, const Eigen::VectorXd q) {
+void MassSpringsModel::force(Eigen::VectorXd &f, const Eigen::VectorXd &q) {
     f = Eigen::VectorXd::Zero(q.rows());
     for (int e = 0; e < E.rows(); e++) {
         int v0 = E(e, 0);
@@ -33,7 +37,7 @@ void MassSpringsModel::force(Eigen::VectorXd &f, const Eigen::VectorXd q) {
     }
 }
 
-void MassSpringsModel::stiffness(Eigen::SparseMatrix<double> &K, const Eigen::VectorXd q) {
+void MassSpringsModel::stiffness(Eigen::SparseMatrix<double> &K, const Eigen::VectorXd &q) {
     std::list<Eigen::Triplet<double>> tl;
     for (int e = 0; e < E.rows(); e++) {
         int v0 = E(e, 0);
@@ -86,6 +90,6 @@ void MassSpringsModel::stiffness(Eigen::SparseMatrix<double> &K, const Eigen::Ve
         tl.emplace_back(v1 + 2, v1 + 1, k * s3 / length_cubed);
         tl.emplace_back(v1 + 2, v1 + 2, -k * (-length_cubed + t3) / length_cubed);
     }
-    K.setZero();
+    K.resize(q.rows(), q.rows());
     K.setFromTriplets(tl.begin(), tl.end());
 }

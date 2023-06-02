@@ -6,11 +6,11 @@ public:
 
     bool init_precompute();
 
-    void potential_energy(double &energy, const Eigen::VectorXd q);
+    void potential_energy(double &energy, const Eigen::VectorXd &q);
 
-    void force(Eigen::VectorXd &f, const Eigen::VectorXd q);
+    void force(Eigen::VectorXd &f, const Eigen::VectorXd &q);
 
-    void stiffness(Eigen::SparseMatrix<double> &K, const Eigen::VectorXd q);
+    void stiffness(Eigen::SparseMatrix<double> &K, const Eigen::VectorXd &q);
 
 private:
     double k;  // stiffness
